@@ -11,8 +11,7 @@ Six mini-jeux pour un enfant de 5-6 ans, jouables à la souris (ou au doigt sur 
 | Lire | Première lettre du mot | Trouver le mot écrit | Lire le mot, trouver l'image |
 | Morpion | Ordinateur au hasard | Gagne s'il peut, bloque parfois | Bloque toujours |
 
-On passe au niveau suivant après 20 réussites (5 victoires au morpion).
-
+On passe au niveau suivant après 20 réussites (5 victoires au morpion). La progression est gardée dans le navigateur. Un clic sur le rond du niveau permet de revenir à un niveau déjà débloqué.
 
 Balle : souris ou flèches gauche/droite. Échap ramène au menu.
 
