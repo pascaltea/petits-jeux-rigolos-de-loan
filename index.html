@@ -82,6 +82,30 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 .cell svg{width:72%;height:72%}
 .cell.wl{background:#fff1b8}
 .cell:focus-visible{outline:5px solid var(--ink)}
+.pie{width:44px;height:44px;display:block;filter:drop-shadow(0 4px 0 rgba(0,0,0,.12))}
+#hud .pie{width:58px;height:58px}
+#mtime{display:flex;align-items:center;gap:10px;font:800 26px var(--display);color:var(--ink);font-variant-numeric:tabular-nums}
+#gear{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));right:calc(14px + env(safe-area-inset-right,0px));width:50px;height:50px;border-radius:50%;border:none;background:var(--white);box-shadow:0 4px 0 rgba(0,0,0,.1);cursor:pointer;display:grid;place-items:center}
+.ovl{position:fixed;inset:0;display:grid;place-items:center;padding:24px 16px;box-sizing:border-box}
+#rest{background:#1f2c4d;z-index:20;color:#ffffff;text-align:center}
+.restbox{display:flex;flex-direction:column;align-items:center;gap:16px}
+.restbox svg{width:clamp(140px,22vw,220px);height:auto}
+#rest h2{font:800 clamp(36px,6vw,64px)/1.1 var(--display);margin:0;text-wrap:balance}
+#rest p{font:600 clamp(22px,3vw,32px) var(--display);margin:0;color:#ffe08a}
+#parentBtn{margin-top:28px;background:transparent;color:#aab6d3;border:2px solid #4a5a82;border-radius:999px;padding:8px 20px;font:600 16px var(--display);cursor:pointer}
+#parent{background:rgba(32,48,74,.6);z-index:30}
+.panel{background:var(--white);color:var(--ink);border-radius:24px;padding:24px;width:min(420px,100%);box-sizing:border-box;display:flex;flex-direction:column;gap:14px;box-shadow:0 12px 0 rgba(0,0,0,.15);user-select:auto;-webkit-user-select:auto}
+.panel h3{margin:0;font:800 26px var(--display)}
+.panel p{margin:0;font:600 17px/1.35 var(--display)}
+.prow{display:flex;align-items:center;justify-content:space-between;gap:10px;font:600 18px var(--display)}
+.step{display:flex;align-items:center;gap:8px;font-variant-numeric:tabular-nums}
+.step b{min-width:74px;text-align:center}
+.pbtn{border:none;border-radius:12px;background:#e8eef7;color:var(--ink);font:800 20px var(--display);min-width:44px;height:44px;padding:0 12px;cursor:pointer}
+.pbtn.main{background:var(--leaf);color:#ffffff}
+.pbtn:focus-visible,#parentBtn:focus-visible,#gear:focus-visible,#gin:focus-visible{outline:4px solid var(--sea);outline-offset:2px}
+#gin{font:800 30px var(--display);width:110px;height:54px;border:3px solid #c9d3e0;border-radius:14px;text-align:center;color:var(--ink);background:var(--white)}
+.gq{font:800 34px var(--display);letter-spacing:1px}
+.bad{animation:shake .4s}
 #lvup{position:fixed;inset:0;display:grid;place-items:center;background:rgba(255,255,255,.82);z-index:10}
 #lvup div{display:flex;flex-direction:column;align-items:center;gap:6px;font:800 clamp(56px,10vw,110px)/1 var(--display);color:var(--ink);text-align:center}
 #lvup svg{width:clamp(120px,20vw,200px);height:auto;animation:pop .6s ease-out}
@@ -91,7 +115,9 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 </head>
 <body>
 <div id="menu">
+  <button id="gear" aria-label="Espace parent"><svg viewBox="0 0 24 24" width="24" height="24"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="#20304a"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" stroke="#20304a" stroke-width="2.4" fill="none"/></svg></button>
   <h1><span>Les Petits</span> <span>Jeux</span> <span>Rigolos</span> <span>de Loan</span></h1>
+  <div id="mtime"><svg viewBox="0 0 36 36" class="pie" aria-hidden="true"><circle cx="18" cy="18" r="17" fill="#ffffff"/><circle class="arc" cx="18" cy="18" r="8" fill="none" stroke="#3ccf8e" stroke-width="16" pathLength="100" stroke-dasharray="100" stroke-dashoffset="0" transform="rotate(-90 18 18)"/></svg><span id="mtxt">60 min</span></div>
   <div class="tiles">
     <button class="tile t1" id="b-bulles" aria-label="Bulles">
       <svg viewBox="0 0 100 100"><circle cx="40" cy="58" r="26" fill="#fff" opacity=".9"/><circle cx="72" cy="30" r="15" fill="#fff" opacity=".75"/><circle cx="32" cy="48" r="7" fill="#3d8bff" opacity=".35"/></svg>Bulles<span class="lvdots" id="d-bulles"></span>
@@ -123,9 +149,33 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
   <button id="home" aria-label="Retour au menu">
     <svg viewBox="0 0 40 40" width="40" height="40"><path d="M6 20L20 8l14 12" stroke="#20304a" stroke-width="4.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M11 18v14h18V18" fill="#ffc93c" stroke="#20304a" stroke-width="4" stroke-linejoin="round"/></svg>
   </button>
-  <div id="hud"><button id="lvl" aria-label="Niveau">1</button><div id="bar"></div></div>
+  <div id="hud"><button id="lvl" aria-label="Niveau">1</button><div id="bar"></div><svg viewBox="0 0 36 36" class="pie" aria-hidden="true"><circle cx="18" cy="18" r="17" fill="#ffffff"/><circle class="arc" cx="18" cy="18" r="8" fill="none" stroke="#3ccf8e" stroke-width="16" pathLength="100" stroke-dasharray="100" stroke-dashoffset="0" transform="rotate(-90 18 18)"/></svg></div>
   <div id="score"><svg viewBox="0 0 40 40" width="44" height="44"><path d="M20 3l5 11 12 1-9 8 3 12-11-6-11 6 3-12-9-8 12-1z" fill="#ffc93c" stroke="#e0a400" stroke-width="2"/></svg><span id="pts">0</span></div>
   <div id="lvup" hidden><div><svg viewBox="0 0 40 40"><path d="M20 3l5 11 12 1-9 8 3 12-11-6-11 6 3-12-9-8 12-1z" fill="#ffc93c" stroke="#e0a400" stroke-width="1.5"/></svg><span id="lvtxt">Niveau 2 !</span></div></div>
+</div>
+
+<div id="rest" class="ovl" hidden>
+  <div class="restbox">
+    <svg viewBox="0 0 200 160" aria-hidden="true"><path d="M118 20a58 58 0 1 0 50 88A46 46 0 0 1 118 20z" fill="#ffd95e"/><circle cx="104" cy="86" r="3.5" fill="#1f2c4d"/><circle cx="128" cy="86" r="3.5" fill="#1f2c4d"/><path d="M104 102q12 8 24 0" stroke="#1f2c4d" stroke-width="3.5" fill="none" stroke-linecap="round"/><g fill="#ffffff"><path d="M30 30l3 7 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/><path d="M175 40l2 5 5 1-4 3 1 5-4-2-4 2 1-5-4-3 5-1z"/><circle cx="50" cy="120" r="3"/><circle cx="182" cy="128" r="2.5"/><circle cx="20" cy="80" r="2"/></g></svg>
+    <h2>C'est fini pour aujourd'hui !</h2>
+    <p>Bravo Loan, à demain</p>
+    <button id="parentBtn">Parent</button>
+  </div>
+</div>
+<div id="parent" class="ovl" hidden>
+  <form class="panel" id="gate" autocomplete="off">
+    <h3>Espace parent</h3>
+    <p>Pour continuer, répondez au calcul.</p>
+    <div class="prow"><span class="gq" id="gq">7 × 8 =</span><input id="gin" type="number" inputmode="numeric" aria-label="Réponse"></div>
+    <div class="prow"><button type="button" class="pbtn" id="gcancel">Annuler</button><button type="submit" class="pbtn main" id="gok">Valider</button></div>
+  </form>
+  <div class="panel" id="pset" hidden>
+    <h3>Temps de jeu</h3>
+    <p id="pleft">Reste aujourd'hui : 60 min</p>
+    <div class="prow"><span>Week-end</span><span class="step"><button class="pbtn" id="weM" aria-label="Moins">−</button><b id="weV">60 min</b><button class="pbtn" id="weP" aria-label="Plus">+</button></span></div>
+    <div class="prow"><span>Semaine</span><span class="step"><button class="pbtn" id="wdM" aria-label="Moins">−</button><b id="wdV">30 min</b><button class="pbtn" id="wdP" aria-label="Plus">+</button></span></div>
+    <div class="prow"><button class="pbtn" id="plus15">+15 min aujourd'hui</button><button class="pbtn main" id="pclose">Fermer</button></div>
+  </div>
 </div>
 
 <script>
@@ -420,14 +470,59 @@ function loop(t){
 function initGame(){
   if(mode==='bulles')bullesInit(); if(mode==='pong')pongInit(); if(mode==='memo')memoInit(); if(mode==='calc')calcInit(); if(mode==='lire')lireInit(); if(mode==='morpion')tttInit();
 }
+// --- temps de jeu (compté seulement pendant qu'on joue, remis à zéro chaque jour)
+if(!save.lim)save.lim={we:60,wd:30};
+const today=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();};
+const isWE=()=>{const g=new Date().getDay();return g===0||g===6;};
+function tday(){if(!save.time||save.time.d!==today())save.time={d:today(),used:0,bonus:0,w5:false};return save.time;}
+const limitSec=()=>((isWE()?save.lim.we:save.lim.wd)+tday().bonus)*60;
+const leftSec=()=>Math.max(0,limitSec()-tday().used);
+function drawTimers(){
+  const L=limitSec(),f=L?leftSec()/L:0,low=leftSec()<=300;
+  document.querySelectorAll('.pie .arc').forEach(a=>{a.style.strokeDashoffset=(100*(1-f)).toFixed(1);a.style.stroke=low?'#ff8a3c':'#3ccf8e';});
+  $('mtxt').textContent=Math.ceil(leftSec()/60)+' min';
+}
+function showRest(){if(mode)home();$('rest').hidden=false;say("C'est fini pour aujourd'hui. Bravo Loan, à demain !");}
+setInterval(()=>{
+  if(!mode||document.hidden||levelling||!$('rest').hidden||!$('parent').hidden)return;
+  const t=tday();t.used++;const l=leftSec();
+  if(l===300&&!t.w5){t.w5=true;say('Encore 5 minutes !');}
+  if(l===60)say('Encore une minute !');
+  if(t.used%10===0)persist();
+  drawTimers();
+  if(l<=0){persist();showRest();}
+},1000);
+document.addEventListener('visibilitychange',persist);
+// espace parent : petit calcul que l'enfant ne sait pas encore faire
+let gAns=0;
+function openParent(){
+  const a=6+rnd(4),b=6+rnd(4);gAns=a*b;$('gq').textContent=a+' × '+b+' =';$('gin').value='';
+  $('gate').hidden=false;$('pset').hidden=true;$('parent').hidden=false;setTimeout(()=>{try{$('gin').focus();}catch(e){}},50);
+}
+function drawPset(){$('pleft').textContent="Reste aujourd'hui : "+Math.ceil(leftSec()/60)+' min'+(isWE()?' (week-end)':' (semaine)');$('weV').textContent=save.lim.we+' min';$('wdV').textContent=save.lim.wd+' min';}
+function closeParent(){$('parent').hidden=true;persist();drawTimers();if(leftSec()>0)$('rest').hidden=true;}
+$('gate').addEventListener('submit',e=>{e.preventDefault();
+  if(parseInt($('gin').value,10)===gAns){$('gate').hidden=true;$('pset').hidden=false;drawPset();}
+  else{const g=$('gate');g.classList.remove('bad');void g.offsetWidth;g.classList.add('bad');const a=6+rnd(4),b=6+rnd(4);gAns=a*b;$('gq').textContent=a+' × '+b+' =';$('gin').value='';}});
+$('gcancel').onclick=()=>{$('parent').hidden=true;};
+$('parentBtn').onclick=openParent;$('gear').onclick=openParent;
+const stepLim=(k,d)=>{save.lim[k]=Math.max(15,Math.min(180,save.lim[k]+d));persist();drawPset();drawTimers();};
+$('weM').onclick=()=>stepLim('we',-15);$('weP').onclick=()=>stepLim('we',15);
+$('wdM').onclick=()=>stepLim('wd',-15);$('wdP').onclick=()=>stepLim('wd',15);
+$('plus15').onclick=()=>{tday().bonus+=15;persist();drawPset();drawTimers();};
+$('pclose').onclick=closeParent;
+drawTimers();
+if(leftSec()<=0)$('rest').hidden=false;
+
 function start(m){
+  if(leftSec()<=0){showRest();return;}
   mode=m;lvl=lvOf(m);prog=save.prog[m]||0;
   $('menu').hidden=true;$('game').hidden=false;resize();setPts(0);parts=[];last=0;levelling=false;$('lvup').hidden=true;
   Object.entries(LAYERS).forEach(([g,id])=>{$(id).hidden=m!==g;});
   drawHud();initGame();
   tone(660,.15,'triangle');cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);
 }
-function home(){mode=null;cancelAnimationFrame(raf);try{speechSynthesis.cancel();}catch(e){}$('game').hidden=true;$('menu').hidden=false;menuDots();}
+function home(){mode=null;cancelAnimationFrame(raf);try{speechSynthesis.cancel();}catch(e){}$('game').hidden=true;$('menu').hidden=false;menuDots();drawTimers();persist();}
 GAMES.forEach(g=>{$('b-'+g).onclick=()=>start(g);});$('home').onclick=home;
 
 cv.addEventListener('pointerdown',e=>{if(levelling)return;if(mode==='bulles')bullesTap(e.clientX,e.clientY);if(mode==='pong')pad.x=e.clientX;});

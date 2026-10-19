@@ -13,6 +13,12 @@ Six mini-jeux pour un enfant de 5-6 ans, jouables à la souris (ou au doigt sur 
 
 On passe au niveau suivant après 20 réussites (5 victoires au morpion). La progression est gardée dans le navigateur. Un clic sur le rond du niveau permet de revenir à un niveau déjà débloqué.
 
+## Temps de jeu
+
+Un minuteur limite le temps de jeu par jour : 60 minutes le week-end et 30 minutes en semaine par défaut. Il ne compte que pendant qu'on joue et repart à zéro chaque jour. Une voix prévient 5 minutes puis 1 minute avant la fin, puis un écran « C'est fini pour aujourd'hui » s'affiche.
+
+Le cadenas en haut à droite du menu ouvre l'espace parent (protégé par une multiplication) pour changer les durées ou ajouter 15 minutes.
+
 Balle : souris ou flèches gauche/droite. Échap ramène au menu.
 
 Tout tient dans un seul fichier, `index.html` : il suffit de l'ouvrir dans un navigateur.
