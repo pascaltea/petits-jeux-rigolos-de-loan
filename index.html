@@ -32,7 +32,7 @@ h1 span:nth-child(1){color:var(--berry)} h1 span:nth-child(2){color:var(--sea)} 
 .lvdots{display:flex;gap:5px}
 .lvdots i{width:11px;height:11px;border-radius:50%;background:var(--white);opacity:.35;display:block}
 .lvdots i.on{opacity:1}
-.t1{background:var(--sea)} .t2{background:var(--berry)} .t3{background:var(--leaf)} .t4{background:var(--tang)} .t5{background:var(--plum)} .t6{background:#2c3e66} .t7{background:#17b8c4}
+.t1{background:var(--sea)} .t2{background:var(--berry)} .t3{background:var(--leaf)} .t4{background:var(--tang)} .t5{background:var(--plum)} .t7{background:#17b8c4}
 #game{position:fixed;inset:0;background:var(--sky)}
 canvas{display:block;width:100%;height:100%;touch-action:none}
 #home{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:calc(14px + env(safe-area-inset-left,0px));width:72px;height:72px;border-radius:50%;
@@ -77,18 +77,6 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
 .bigword{font:800 clamp(52px,10vw,110px)/1 var(--display);letter-spacing:6px;color:#9aa8bd}
 .bigword .hl{color:var(--berry)}
 .bigword .s0{color:var(--sea)} .bigword .s1{color:var(--berry)}
-.board{display:grid;grid-template-columns:repeat(8,1fr);border-radius:14px;overflow:hidden;border:7px solid #c9d3e0;box-shadow:0 8px 0 rgba(0,0,0,.15);transition:border-color .3s}
-.board.myturn{border-color:var(--sun)}
-.sq{aspect-ratio:1;border:none;padding:0;margin:0;display:grid;place-items:center;cursor:pointer;position:relative;line-height:1;font-family:"Apple Symbols","Segoe UI Symbol","DejaVu Sans",serif}
-.sq.l{background:#f3e3c3} .sq.d{background:#c8925a}
-.sq.last{box-shadow:inset 0 0 0 5px rgba(61,139,255,.55)}
-.sq.sel{background:#ffe066}
-.sq.chk{background:#ff8fa8}
-.sq.mv::after{content:"";position:absolute;width:30%;height:30%;border-radius:50%;background:rgba(32,48,74,.32)}
-.sq.cap::after{content:"";position:absolute;inset:6%;border-radius:50%;border:5px solid rgba(255,92,138,.85)}
-.sq:focus-visible{outline:4px solid var(--ink);outline-offset:-4px}
-.star{color:#ffc93c;text-shadow:0 3px 0 #e0a400}
-.pw{color:#fff;-webkit-text-stroke:1.6px #20304a;text-shadow:0 3px 0 rgba(0,0,0,.2)} .pb{color:#20304a;text-shadow:0 3px 0 rgba(0,0,0,.15)}
 .tttg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .cell{aspect-ratio:1;border:none;border-radius:24px;background:var(--white);box-shadow:0 7px 0 rgba(0,0,0,.12);cursor:pointer;display:grid;place-items:center;padding:0}
 .cell svg{width:72%;height:72%}
@@ -120,9 +108,6 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
     <button class="tile t5" id="b-lire" aria-label="Lire">
       <svg viewBox="0 0 100 100"><path d="M50 28C40 20 24 18 12 20v56c12-2 28 0 38 8z" fill="#fff"/><path d="M50 28c10-8 26-10 38-8v56c-12-2-28 0-38 8z" fill="#fff" opacity=".8"/><text x="31" y="62" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="30" fill="#a66bff">A</text></svg>Lire<span class="lvdots" id="d-lire"></span>
     </button>
-    <button class="tile t6" id="b-echecs" aria-label="Échecs">
-      <svg viewBox="0 0 100 100"><text x="50" y="82" text-anchor="middle" font-size="82" fill="#fff" font-family="Apple Symbols, Segoe UI Symbol, serif">&#9822;&#xFE0E;</text></svg>Échecs<span class="lvdots" id="d-echecs"></span>
-    </button>
     <button class="tile t7" id="b-morpion" aria-label="Morpion">
       <svg viewBox="0 0 100 100"><path d="M37 12v76M63 12v76M12 37h76M12 63h76" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".7"/><path d="M18 18l13 13M31 18L18 31" stroke="#fff" stroke-width="6" stroke-linecap="round"/><circle cx="50" cy="50" r="7.5" stroke="#ffc93c" stroke-width="5" fill="none"/><path d="M69 69l13 13M82 69L69 82" stroke="#fff" stroke-width="6" stroke-linecap="round"/></svg>Morpion<span class="lvdots" id="d-morpion"></span>
     </button>
@@ -133,7 +118,6 @@ canvas{display:block;width:100%;height:100%;touch-action:none}
   <canvas id="cv"></canvas>
   <div id="memo" class="layer" hidden><div class="grid" id="grid"></div></div>
   <div id="calc" class="layer" hidden><div class="eq" id="eq"></div><div class="answers" id="answers"></div></div>
-  <div id="chess" class="layer" hidden><div class="board" id="board"></div></div>
   <div id="ttt" class="layer" hidden><div class="tttg" id="tttg"></div></div>
   <div id="lire" class="layer" hidden><div class="prompt" id="rq"></div><div class="answers" id="ropts"></div></div>
   <button id="home" aria-label="Retour au menu">
@@ -150,8 +134,8 @@ const $=id=>document.getElementById(id);
 const cv=$('cv'), ctx=cv.getContext('2d');
 let W=0,H=0,mode=null,raf=0,pts=0,last=0;
 const COLORS=['#ff5c8a','#3d8bff','#3ccf8e','#ffc93c','#a66bff','#ff8a3c'];
-const GAMES=['bulles','pong','memo','calc','lire','echecs','morpion'], MAXLV=3, GOALS={echecs:[8,3,3,3],morpion:5}, goalOf=g=>{const v=GOALS[g];return Array.isArray(v)?v[(g===mode?lvl:1)-1]:(v||20);}, maxLv=g=>g==='echecs'?4:MAXLV;
-const LAYERS={memo:'memo',calc:'calc',lire:'lire',echecs:'chess',morpion:'ttt'};
+const GAMES=['bulles','pong','memo','calc','lire','morpion'], MAXLV=3, GOALS={morpion:5}, goalOf=g=>GOALS[g]||20, maxLv=g=>MAXLV;
+const LAYERS={memo:'memo',calc:'calc',lire:'lire',morpion:'ttt'};
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const rnd=n=>Math.floor(Math.random()*n), shuffle=a=>a.sort(()=>Math.random()-.5);
 
@@ -388,127 +372,6 @@ function lireInit(){
     box.appendChild(b);});
 }
 
-// --- ÉCHECS, appris pas à pas
-// N1 la chasse aux étoiles (une pièce, apprendre à la déplacer), N2 la bataille des pions,
-// N3 la petite partie (roi, tours, cavaliers, pions), N4 bonus : la vraie partie (on gagne en attrapant le roi)
-const VAL={p:1,n:3,b:3,r:5,q:9,k:100}, GLYPH={k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'};
-const PNAME={r:'la tour',b:'le fou',n:'le cavalier',q:'la dame',k:'le roi'}, HUNT=['r','r','b','b','n','n','q','k'];
-let CB=[],cTurn=true,cSel=null,cMoves=[],cLast=null,cOver=false,cMode='full',stars=new Set();
-function chessBoardEl(){
-  const g=$('board');const size=Math.max(260,Math.min(innerWidth*0.94,innerHeight-130,640));
-  g.style.width=size+'px';g.style.fontSize=(size/8*0.74)+'px';g.innerHTML='';
-  for(let i=0;i<64;i++){const b=document.createElement('button');b.className='sq';b.id='sq'+i;b.setAttribute('aria-label','case');b.onclick=()=>chessClick(i);g.appendChild(b);}
-}
-function chessInit(){
-  cMode=['stars','pawns','mini','full'][lvl-1];
-  cTurn=true;cSel=null;cMoves=[];cLast=null;cOver=false;stars=new Set();CB=Array(64).fill(null);
-  chessBoardEl();
-  if(cMode==='stars'){huntSetup();return;}
-  const back=cMode==='full'?'rnbqkbnr':cMode==='mini'?'rn..k.nr':'........';
-  for(let c=0;c<8;c++){
-    if(back[c]!=='.'){CB[c]={t:back[c],w:false};CB[56+c]={t:back[c],w:true};}
-    CB[8+c]={t:'p',w:false};CB[48+c]={t:'p',w:true};}
-  chessRender();
-  say(cMode==='pawns'?'Amène un pion tout au bout !':'Attrape le roi !');
-}
-function huntSetup(){
-  const t=HUNT[prog%HUNT.length];CB=Array(64).fill(null);
-  let pos=8+rnd(48);CB[pos]={t,w:true};
-  const nStars=t==='k'||t==='n'?3:4;stars=new Set();let cur=pos,guard=0;
-  while(stars.size<nStars&&guard++<200){ // étoiles posées sur un chemin possible : toujours faisable
-    const B=Array(64).fill(null);B[cur]={t,w:true};const ms=gen(B,true);const m=ms[rnd(ms.length)];
-    if(m.t!==pos)stars.add(m.t);cur=m.t;}
-  cSel=pos;cMoves=gen(CB,true);chessRender();say(PNAME[t]+' !');
-}
-function gen(B,white){
-  const out=[];
-  for(let i=0;i<64;i++){const p=B[i];if(!p||p.w!==white)continue;const r=i>>3,c=i&7;
-    const add=(rr,cc,mode)=>{if(rr<0||rr>7||cc<0||cc>7)return false;const j=rr*8+cc,q=B[j];
-      if(mode==='move'){if(q)return false;out.push({f:i,t:j});return true;}
-      if(mode==='cap'){if(q&&q.w!==white)out.push({f:i,t:j});return false;}
-      if(!q){out.push({f:i,t:j});return true;} if(q.w!==white)out.push({f:i,t:j}); return false;};
-    if(p.t==='p'){const d=white?-1:1,st=white?6:1;if(add(r+d,c,'move')&&r===st)add(r+2*d,c,'move');add(r+d,c-1,'cap');add(r+d,c+1,'cap');}
-    else if(p.t==='n'){[[1,2],[2,1],[-1,2],[-2,1],[1,-2],[2,-1],[-1,-2],[-2,-1]].forEach(([a,b])=>add(r+a,c+b,'any'));}
-    else if(p.t==='k'){for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++)if(a||b)add(r+a,c+b,'any');}
-    else{const ds=[];if(p.t!=='r')ds.push([1,1],[1,-1],[-1,1],[-1,-1]);if(p.t!=='b')ds.push([1,0],[-1,0],[0,1],[0,-1]);
-      ds.forEach(([a,b])=>{let k=1;while(add(r+a*k,c+b*k,'any'))k++;});}
-  }
-  return out;
-}
-function applyMv(B,m){const N=B.slice(),p=N[m.f],cap=N[m.t];N[m.t]=p;N[m.f]=null;
-  if(p.t==='p'&&(m.t<8||m.t>55))N[m.t]={t:'q',w:p.w};return{B:N,cap};}
-function kingSq(B,white){return B.findIndex(p=>p&&p.t==='k'&&p.w===white);}
-function chessRender(){
-  const tgt=new Map(cMoves.map(m=>[m.t,!!CB[m.t]]));
-  const wk=cMode==='stars'?-1:kingSq(CB,true), inChk=wk>=0&&gen(CB,false).some(m=>m.t===wk);
-  for(let i=0;i<64;i++){const b=$('sq'+i),p=CB[i],r=i>>3,c=i&7;
-    let cl='sq '+((r+c)%2?'d':'l');
-    if(cLast&&(cLast.f===i||cLast.t===i))cl+=' last';
-    if(cSel===i)cl+=' sel';
-    if(inChk&&i===wk)cl+=' chk';
-    if(tgt.has(i))cl+=tgt.get(i)?' cap':' mv';
-    b.className=cl;
-    b.innerHTML=p?'<span class="'+(p.w?'pw':'pb')+'">'+GLYPH[p.t]+'︎</span>':stars.has(i)?'<span class="star">★︎</span>':'';}
-  $('board').classList.toggle('myturn',cTurn&&!cOver);
-}
-function sqCenter(i){const r=$('sq'+i).getBoundingClientRect();return[r.left+r.width/2,r.top+r.height/2];}
-function chessClick(i){
-  if(cOver||!cTurn||levelling)return;
-  const m=cMoves.find(m=>m.t===i);
-  if(cSel!==null&&m){doMove(m);return;}
-  if(cMode==='stars'){tone(200,.12,'sine',.08);return;}
-  const p=CB[i];
-  if(p&&p.w){cSel=i;cMoves=gen(CB,true).filter(m=>m.f===i);tone(520,.08);}
-  else{cSel=null;cMoves=[];}
-  chessRender();
-}
-function doMove(m){
-  const mover=CB[m.f];
-  if(cMode==='stars'){ // chasse aux étoiles
-    CB=applyMv(CB,m).B;cLast=m;
-    if(stars.delete(m.t)){const[x,y]=sqCenter(m.t);burst(x,y,'#ffc93c',18);tone(700+(4-stars.size)*120,.16,'triangle');setPts(pts+1);}
-    else tone(440,.08,'sine',.1);
-    if(!stars.size){cOver=true;cSel=null;cMoves=[];chessRender();fanfare();if(win())return;setTimeout(()=>{if(mode==='echecs'&&!levelling){cOver=false;cLast=null;huntSetup();}},1400);return;}
-    cSel=m.t;cMoves=gen(CB,true);chessRender();return;
-  }
-  const r=applyMv(CB,m);CB=r.B;cLast=m;cSel=null;cMoves=[];
-  if(r.cap){const[x,y]=sqCenter(m.t);burst(x,y,mover.w?'#ffc93c':'#ff5c8a',16);tone(mover.w?760:300,.16,'triangle');if(mover.w)setPts(pts+1);}
-  else tone(mover.w?440:330,.08,'sine',.1);
-  if(r.cap&&r.cap.t==='k'){chessRender();chessEnd(mover.w);return;}
-  if(cMode==='pawns'){
-    if(mover.t==='p'&&(m.t<8||m.t>55)){chessRender();chessEnd(mover.w);return;}
-    if(!CB.some(p=>p&&p.w!==mover.w)){chessRender();chessEnd(mover.w);return;}
-  }
-  cTurn=!cTurn;chessRender();
-  if(!cTurn)setTimeout(()=>{if(mode==='echecs'&&!cOver&&!cTurn)aiChess();},800);
-  else if(!gen(CB,true).length)chessEnd(null);
-}
-function aiChess(){
-  const ms=gen(CB,false);if(!ms.length){chessEnd(null);return;}
-  const caps=ms.filter(m=>CB[m.t]), any=a=>a[rnd(a.length)];
-  let pick;
-  if(cMode==='pawns'){ // gentil : gagne s'il peut, sinon prend une fois sur deux
-    pick=ms.find(m=>m.t>55)||((caps.length&&Math.random()<.5)?any(caps):any(ms));
-  }else if(cMode==='mini'){
-    pick=ms.find(m=>CB[m.t]&&CB[m.t].t==='k');
-    if(!pick){if(caps.length&&Math.random()<.6){caps.sort((a,b)=>VAL[CB[b.t].t]-VAL[CB[a.t].t]);pick=caps[0];}else pick=any(ms);}
-  }else{
-    let best=-1e9;for(const m of ms){const cap=CB[m.t];let sc=cap?VAL[cap.t]:0;
-      const nb=applyMv(CB,m).B;let worst=0;for(const rm of gen(nb,true)){const q=nb[rm.t];if(q)worst=Math.max(worst,VAL[q.t]);}
-      sc-=worst*.9;sc+=Math.random()*.6;if(sc>best){best=sc;pick=m;}}
-  }
-  doMove(pick);
-}
-function chessEnd(whiteWon){
-  cOver=true;chessRender();
-  if(whiteWon===true){fanfare();say(cMode==='pawns'?'Bravo, tu as gagné la bataille !':'Bravo, tu as attrapé le roi !');
-    const r=$('board').getBoundingClientRect();for(let i=0;i<10;i++)burst(r.left+Math.random()*r.width,r.top+Math.random()*r.height,COLORS[i%6],18);
-    if(win())return;}
-  else if(whiteWon===false){tone(260,.3,'sine',.12);setTimeout(()=>tone(200,.4,'sine',.12),250);say(cMode==='pawns'?'Oh, il est arrivé au bout. On recommence !':'Oh, il a attrapé ton roi. On recommence !');}
-  else say('Match nul, on recommence !');
-  setTimeout(()=>{if(mode==='echecs'&&!levelling)chessInit();},4000);
-}
-
 // --- MORPION : N1 l'ordinateur joue au hasard, N2 il gagne s'il peut et bloque parfois, N3 il bloque toujours
 const LINES=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
 const XS='<svg viewBox="0 0 100 100"><path d="M24 24L76 76M76 24L24 76" stroke="#3d8bff" stroke-width="16" stroke-linecap="round"/></svg>';
@@ -555,7 +418,7 @@ function loop(t){
   drawParts(dt); raf=requestAnimationFrame(loop);
 }
 function initGame(){
-  if(mode==='bulles')bullesInit(); if(mode==='pong')pongInit(); if(mode==='memo')memoInit(); if(mode==='calc')calcInit(); if(mode==='lire')lireInit(); if(mode==='echecs')chessInit(); if(mode==='morpion')tttInit();
+  if(mode==='bulles')bullesInit(); if(mode==='pong')pongInit(); if(mode==='memo')memoInit(); if(mode==='calc')calcInit(); if(mode==='lire')lireInit(); if(mode==='morpion')tttInit();
 }
 function start(m){
   mode=m;lvl=lvOf(m);prog=save.prog[m]||0;
