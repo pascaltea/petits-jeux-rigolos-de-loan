@@ -1,16 +1,16 @@
 # Les Petits Jeux Rigolos de Loan
 
-Des jeux d'éveil pour un enfant de 5-6 ans, jouables à la souris (ou au doigt sur tablette), sans avoir besoin de savoir lire. Chaque jeu travaille une compétence différente.
+Des jeux d'éveil pour un enfant de 6 ans, jouables à la souris (ou au doigt sur tablette), sans avoir besoin de savoir lire. Chaque jeu travaille une compétence différente.
 
 ## Les 5 jeux principaux
 
 | Jeu | Ce qu'il travaille | Niveau 1 | Niveau 2 | Niveau 3 |
 |---|---|---|---|---|
-| Lire | Lettres, sons, début de la lecture | Première lettre du mot | Trouver le mot écrit | Lire le mot, trouver l'image |
-| Calcul | Sens du nombre | Additions avec points | Additions sans points | Additions et soustractions |
-| Mémo | Mémoire de travail | 4 paires | 6 paires | 8 paires |
-| Suites | Raisonnement logique, motifs | Motifs AB | Motifs ABC, AAB, ABB | Motifs de 4, une seule forme ou couleur |
-| Formes | Repérage dans l'espace | Trouver la même forme | La même forme, tournée | Tournée, avec un piège en miroir |
+| Lire | Lecture de mots | Trouver le mot écrit parmi des mots qui se ressemblent | Lire le mot, trouver l'image | Construire le mot avec les syllabes |
+| Calcul | Calcul mental | Additions et soustractions jusqu'à 10 | Jusqu'à 20 | Le nombre qui manque (7 + ? = 10) |
+| Mémo | Mémoire de travail | 6 paires | 8 paires | Associer le chiffre et les points |
+| Suites | Raisonnement logique | Motifs ABC, AAB, ABB | Motifs de 4, une seule forme ou couleur | Suites de nombres (2, 4, 6, ?) |
+| Formes | Repérage dans l'espace | La même forme tournée, piège en miroir | La pièce qui bouche le trou | Compléter le dessin symétrique |
 
 ## Jeux en plus (désactivés par défaut)
 
